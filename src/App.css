@@ -1,0 +1,8 @@
+.app{
+  width: 100%;
+}
+
+.darkMode{
+  background-color: #212121;
+  color: rgb(223, 224, 225);
+}
