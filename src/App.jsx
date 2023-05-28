@@ -12,6 +12,7 @@ import { Button } from '@mui/material';
 function App() {
   const [divHeight, setDivHeight] = useState('100vh');
   const contentRef = useRef(null);
+  
 
   useEffect(() => {
     const contentDiv = contentRef.current;
@@ -33,6 +34,9 @@ function App() {
   const [edit, setEdit]= useState(null);
   const [mode, setMode]= useState('darkMode');
   const [checked,setChecked]=useState(true);
+ 
+  
+
 
   function dataReducer(data,action){
 
@@ -43,7 +47,7 @@ function App() {
           ...data,
           {
             ...action.payload,
-            id:data.length+10
+            id:data.length+20
           }
         ]
 
@@ -56,6 +60,17 @@ function App() {
         updatedData.splice(index,1,action.payload);
         setEdit(null);
         return updatedData;
+      }
+
+      case 'API':{
+        let len=data.length;
+        const res=action.payload.map((vid)=>{
+           const obj= {...vid,id:len+20}
+           len++;
+           return obj
+        })
+
+        return [...data,...res]
       }
      
 
@@ -85,6 +100,16 @@ function App() {
     setChecked(!checked)
   }
 
+  async function handleClick(){
+
+    const res=await fetch('https://my.api.mockaroo.com/videos.json?key=271ef0b0');
+
+    const apiData=await res.json();
+
+    dispatch({type:"API", payload:apiData});
+
+  }
+
 
 
   return (
@@ -99,7 +124,7 @@ function App() {
       <TopControls handleChange={handleChange} handleModel={handleModel} checked={checked} mode={mode}/>
 
       <div style={{paddingLeft:"20px"}}>
-      <Button   variant="contained" >Get Videos From API</Button>
+      <Button   variant="contained" onClick={handleClick}>Get Videos From API</Button>
       </div>
    
  {

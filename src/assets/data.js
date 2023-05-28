@@ -7,18 +7,18 @@ export default [{
     verified:true
 },
 {
-    id:11,
-    title:"Open-Source roadmap 2023",
-    channel:"Harkirat Singh",
+    id:13,
+    title:"Beachside vlogging",
+    channel:"vlogger101",
     time:"3 weeks ago",
     views:"200k",
     verified:false
 
 },
 {
-    id:22,
+    id:20,
     title:"DSA roadmap 2023",
-    channel:"Love babbar",
+    channel:"Coding Ninjas",
     time:"2 months ago",
     views:"450k",
     verified:true
