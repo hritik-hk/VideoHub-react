@@ -6,7 +6,7 @@ import Modal from './components/Modal/Modal'
 import ThemeContext from './context/ThemeContext'
 import VideoDispatchContext from './context/VideoDispatchContext'
 import TopControls from "./components/TopControls/TopControls"
-import { Button } from '@mui/material';
+import { Button,AlertTitle, Alert } from '@mui/material';
 
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
   const [edit, setEdit]= useState(null);
   const [mode, setMode]= useState('darkMode');
   const [checked,setChecked]=useState(true);
+  const [error,setError]=useState(false);
  
   
 
@@ -102,11 +103,19 @@ function App() {
 
   async function handleClick(){
 
+      try{
     const res=await fetch('https://my.api.mockaroo.com/videos.json?key=271ef0b0');
 
-    const apiData=await res.json();
+        if(!res.ok){
+          throw new Error("Something Went Wrong, Unable to fetch data from API!");
+        }else{
+           const apiData=await res.json();
+           dispatch({type:"API", payload:apiData});
+        }
+      }catch(err){
+         setError(true);
+      }
 
-    dispatch({type:"API", payload:apiData});
 
   }
 
@@ -120,6 +129,17 @@ function App() {
     {modalOpen && <Modal 
    edit={edit}
    setOpenModal={setModalOpen} />}
+
+{error && <Alert severity="error"
+ action={
+    <Button color="inherit" size="small" onClick={()=>setError(false)}>
+      close
+    </Button>
+  }
+ >
+  <AlertTitle>Error</AlertTitle>
+  Something Went Wrong— <strong>Unable to fetch data from API</strong>
+</Alert>}
 
       <TopControls handleChange={handleChange} handleModel={handleModel} checked={checked} mode={mode}/>
 
