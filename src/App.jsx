@@ -30,6 +30,7 @@ function App() {
   }, []);
 
 
+
   const [modalOpen, setModalOpen] = useState(false);
   const [edit, setEdit]= useState(null);
   const [mode, setMode]= useState('darkMode');
@@ -37,20 +38,27 @@ function App() {
   const [error,setError]=useState(false);
  
   
+  //for storing the total length of the data array
+  //it will store total lenth of elements the were ever added to the data array
+  // this used to solve key duplication while mapping data elements in react
+  const totalLen=useRef(3); 
 
 
   function dataReducer(data,action){
 
     switch(action.type){
 
-      case 'ADD':
-       return [
+      case 'ADD':{
+        const addedData=[
           ...data,
           {
             ...action.payload,
-            id:data.length+20
+            id:totalLen.current+20
           }
         ]
+        totalLen.current++;
+        return addedData;
+      }
 
       case 'DELETE':
         return data.filter(video=>video.id!==action.payload)
@@ -64,10 +72,10 @@ function App() {
       }
 
       case 'API':{
-        let len=data.length;
+        
         const res=action.payload.map((vid)=>{
-           const obj= {...vid,id:len+20}
-           len++;
+           const obj= {...vid,id:totalLen.current+20}
+           totalLen.current++;
            return obj
         })
 
